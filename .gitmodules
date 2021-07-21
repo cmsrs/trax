@@ -1,0 +1,4 @@
+[submodule "laradock"]
+	path = laradock
+	url = https://github.com/Laradock/laradock.git
+    branch = 397babfbfb61649a49ad5d3ad31d5bd00e60e2f9
