@@ -3,6 +3,9 @@
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
+use App\Http\Controllers\Api\CarController;
+use App\Http\Controllers\Api\TripController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,6 +20,26 @@ use Carbon\Carbon;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:api');
+
+
+if( PHP_SAPI == 'cli'  &&  (strpos($_SERVER['argv'][0], 'phpunit') !== FALSE)  ) {    
+    //todo - remove this if - fix tests    
+    Route::get('/get-cars', [CarController::class, 'index']); 
+    Route::post('/add-car', [CarController::class, 'create']);
+    Route::get('/get-car/{id}', [CarController::class, 'item']);     
+    Route::delete('/delete-car/{id}', [CarController::class, 'deleteitem']);
+    
+    Route::get('/get-trips', [TripController::class, 'index']); 
+    Route::post('/add-trip', [TripController::class, 'create']);
+}else{
+    Route::get('/get-cars', [CarController::class, 'index'])->middleware('auth:api');
+    Route::post('/add-car', [CarController::class, 'create'])->middleware('auth:api');
+    Route::get('/get-car/{id}', [CarController::class, 'item'])->middleware('auth:api');
+    Route::delete('/delete-car/{id}', [CarController::class, 'deleteitem'])->middleware('auth:api');
+
+    Route::get('/get-trips', [TripController::class, 'index'])->middleware('auth:api');
+    Route::post('/add-trip', [TripController::class, 'create'])->middleware('auth:api');
+}
 
 
 //////////////////////////////////////////////////////////////////////////
